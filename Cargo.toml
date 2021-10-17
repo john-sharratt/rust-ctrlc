@@ -1,6 +1,6 @@
 [package]
 name = "ctrlc-async"
-version = "3.2.1"
+version = "3.2.2"
 authors = ["Antti Keränen <detegr@gmail.com>", "John Sharratt <johnathan.sharratt@gmail.com>"]
 description = "Easy asynchronous Ctrl-C handler for Rust projects"
 documentation = "http://detegr.github.io/doc/ctrlc"

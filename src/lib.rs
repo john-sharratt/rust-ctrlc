@@ -30,7 +30,7 @@
 //!     let running = Arc::new(AtomicBool::new(true));
 //!     let r = running.clone();
 //!
-//!     ctrlc::set_handler(move || {
+//!     ctrlc_async::set_handler(move || {
 //!         r.store(false, Ordering::SeqCst);
 //!     }).expect("Error setting Ctrl-C handler");
 //!
@@ -69,7 +69,7 @@ static INIT: AtomicBool = AtomicBool::new(false);
 ///
 /// # Example
 /// ```no_run
-/// ctrlc::set_handler(|| println!("Hello world!")).expect("Error setting Ctrl-C handler");
+/// ctrlc_async::set_handler(|| println!("Hello world!")).expect("Error setting Ctrl-C handler");
 /// ```
 ///
 /// # Warning
@@ -103,7 +103,7 @@ where F: FnMut() -> () + 'static + Send,
 ///
 /// # Example
 /// ```no_run
-/// ctrlc::set_async_handler(async { println!("Hello world!"); }).expect("Error setting Ctrl-C handler");
+/// ctrlc_async::set_async_handler(async { println!("Hello world!"); }).expect("Error setting Ctrl-C handler");
 /// ```
 ///
 /// # Warning
