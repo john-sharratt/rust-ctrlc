@@ -258,24 +258,24 @@ async fn test_set_handler()
     #[cfg(feature = "async-std")]
     let (tx, rx) = async_std::channel::bounded(1);
 
-    ctrlc::set_async_handler(async move {
+    ctrlc_async::set_async_handler(async move {
         tx.send(true).await.unwrap();       
     })
     .unwrap();
 
-    let nothing = ctrlc::helper::timeout(::std::time::Duration::from_millis(100), rx.recv())
+    let nothing = ctrlc_async::helper::timeout(::std::time::Duration::from_millis(100), rx.recv())
         .await;
     assert!(nothing.is_none(), "should not have been triggered yet");
 
     platform::raise_ctrl_c();
 
-    ctrlc::helper::timeout(::std::time::Duration::from_secs(10), rx.recv())
+    ctrlc_async::helper::timeout(::std::time::Duration::from_secs(10), rx.recv())
         .await
         .unwrap()
         .unwrap();
 
-    match ctrlc::set_async_handler(async {}) {
-        Err(ctrlc::Error::MultipleHandlers) => {}
+    match ctrlc_async::set_async_handler(async {}) {
+        Err(ctrlc_async::Error::MultipleHandlers) => {}
         Err(err) => panic!("{:?}", err),
         Ok(_) => panic!("should not have succeeded"),
     }

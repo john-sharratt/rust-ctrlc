@@ -1,8 +1,8 @@
 [package]
-name = "ctrlc"
+name = "ctrlc-async"
 version = "3.2.1"
 authors = ["Antti Keränen <detegr@gmail.com>", "John Sharratt <johnathan.sharratt@gmail.com>"]
-description = "Easy Ctrl-C handler for Rust projects"
+description = "Easy asynchronous Ctrl-C handler for Rust projects"
 documentation = "http://detegr.github.io/doc/ctrlc"
 homepage = "https://github.com/Detegr/rust-ctrlc"
 keywords = ["ctrlc", "signal", "SIGINT"]

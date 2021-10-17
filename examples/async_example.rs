@@ -7,7 +7,7 @@
 // notice may not be copied, modified, or distributed except
 // according to those terms.
 
-use ctrlc;
+use ctrlc_async;
 
 #[cfg_attr(feature = "tokio", tokio::main(flavor = "current_thread"))]
 #[cfg_attr(feature = "async-std", async_std::main())]
@@ -17,7 +17,7 @@ async fn main() {
     #[cfg(feature = "async-std")]
     let (tx, rx) = async_std::channel::bounded(1);
 
-    ctrlc::set_async_handler(async move {
+    ctrlc_async::set_async_handler(async move {
             tx.send(()).await.expect("Could not send signal on channel.");
         })
         .expect("Error setting Ctrl-C handler");

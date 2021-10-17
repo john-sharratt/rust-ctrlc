@@ -7,7 +7,7 @@ use std::time::Duration;
 fn main() {
     let running = Arc::new(AtomicUsize::new(0));
     let r = running.clone();
-    ctrlc::set_handler(move || {
+    ctrlc_async::set_handler(move || {
         let prev = r.fetch_add(1, Ordering::SeqCst);
         if prev == 0 {
             println!("Exiting...");
