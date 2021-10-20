@@ -44,6 +44,47 @@
 //! Handling of `SIGTERM and SIGHUP` can be enabled with `termination` feature. If this is enabled,
 //! the handler specified by `set_handler()` will be executed for `SIGINT`, `SIGTERM` and `SIGHUP`.
 //!
+//! If you are running with a tokio runtime you can use asynchronous handlers
+//! 
+//! # Example
+//! ```no_run
+//! use ctrlc_async;
+//! 
+//! #[tokio::main(flavor = "current_thread")]
+//! async fn main() {
+//!     let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+//! 
+//!     ctrlc_async::set_async_handler(async move {
+//!             tx.send(()).await.expect("Could not send signal on channel.");
+//!         })
+//!         .expect("Error setting Ctrl-C handler");
+//! 
+//!     println!("Waiting for Ctrl-C...");
+//!     rx.recv().await.expect("Could not receive from channel.");
+//!     println!("Got it! Exiting...");
+//! }
+//! ```
+//!
+//! The async-std runtime is also supported
+//! 
+//! # Example
+//! ```no_run
+//! use ctrlc_async;
+//! 
+//! #[async_std::main()]
+//! async fn main() {
+//!     let (tx, rx) = async_std::channel::bounded(1);
+//! 
+//!     ctrlc_async::set_async_handler(async move {
+//!             tx.send(()).await.expect("Could not send signal on channel.");
+//!         })
+//!         .expect("Error setting Ctrl-C handler");
+//! 
+//!     println!("Waiting for Ctrl-C...");
+//!     rx.recv().await.expect("Could not receive from channel.");
+//!     println!("Got it! Exiting...");
+//! }
+//! ```
 
 #[macro_use]
 
@@ -70,6 +111,13 @@ static INIT: AtomicBool = AtomicBool::new(false);
 /// # Example
 /// ```no_run
 /// ctrlc_async::set_handler(|| println!("Hello world!")).expect("Error setting Ctrl-C handler");
+/// ```
+/// 
+/// If you are using the tokio or async-std runtime(s) you can set an asynchronous handler instead
+/// 
+/// # Example
+/// ```no_run
+/// ctrlc_async::set_async_handler(async { println!("Hello world!"); }).expect("Error setting Ctrl-C handler");
 /// ```
 ///
 /// # Warning
